@@ -66,3 +66,81 @@ xhr.onload = () => {
 xhr.send()
 
 
+//converter
+
+// const usdInput = document.querySelector('#usd');
+// const somInput = document.querySelector('#som');
+// const eurInput = document.querySelector('#eur');
+//
+// const converter = (element, targetElement) => {
+//     element.oninput = () => {
+//         const request = new XMLHttpRequest();
+//         request.open('GET', '../data/converter.json')
+//         request.setRequestHeader('Content-Type', 'application/json')
+//         request.send()
+//
+//         request.onload = () => {
+//             const data = JSON.parse(request.response)
+//             if (element.id === 'som'){
+//                 targetElement.value = (element.value / data.usd).toFixed(2)
+//             }
+//             if (element.id === 'usd'){
+//                 targetElement.value = (element.value * data.usd).toFixed(2)
+//             }
+//             if (element.value === '') {
+//                 targetElement.value = ''
+//             }
+//
+//         }
+//     }
+// }
+//
+// converter(usdInput, somInput)
+// converter(somInput, usdInput)
+
+
+
+const usdInput = document.querySelector('#usd');
+const somInput = document.querySelector('#som');
+const eurInput = document.querySelector('#eur');
+
+const converter = (element, targetElements) => {
+    element.oninput = () => {
+        const request = new XMLHttpRequest();
+        request.open('GET', '../data/converter.json');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send();
+
+        request.onload = () => {
+            const data = JSON.parse(request.response);
+            const usdRate = data.usd;
+            const eurRate = data.eur;
+
+            if (element.id === 'som') {
+                targetElements.usd.value = (element.value / usdRate).toFixed(2);
+                targetElements.eur.value = (element.value / eurRate).toFixed(2);
+            }
+            if (element.id === 'usd') {
+                targetElements.som.value = (element.value * usdRate).toFixed(2);
+                targetElements.eur.value = (element.value * (usdRate / eurRate)).toFixed(2);
+            }
+            if (element.id === 'eur') {
+                targetElements.som.value = (element.value * eurRate).toFixed(2);
+                targetElements.usd.value = (element.value * (eurRate / usdRate)).toFixed(2);
+            }
+
+            if (element.value === '') {
+                targetElements.usd.value = '';
+                targetElements.som.value = '';
+                targetElements.eur.value = '';
+            }
+        };
+    };
+};
+
+converter(somInput, { usd: usdInput, eur: eurInput });
+converter(usdInput, { som: somInput, eur: eurInput });
+converter(eurInput, { usd: usdInput, som: somInput });
+
+
+
