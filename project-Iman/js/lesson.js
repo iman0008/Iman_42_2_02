@@ -120,7 +120,7 @@ const converter = (element, targetElements) => {
                 targetElements.usd.value = (element.value / usdRate).toFixed(2);
                 targetElements.eur.value = (element.value / eurRate).toFixed(2);
             }
-            if (element.id === 'usd') {
+            if (element.id === 'us0d') {
                 targetElements.som.value = (element.value * usdRate).toFixed(2);
                 targetElements.eur.value = (element.value * (usdRate / eurRate)).toFixed(2);
             }
@@ -141,6 +141,61 @@ const converter = (element, targetElements) => {
 converter(somInput, { usd: usdInput, eur: eurInput });
 converter(usdInput, { som: somInput, eur: eurInput });
 converter(eurInput, { usd: usdInput, som: somInput });
+
+//card  switcher
+
+
+const card = document.querySelector('.card');
+const prevButton = document.querySelector('#btn-prev');
+const nextButton= document.querySelector('#btn-next');
+
+let cardId = 1;
+
+const loadCardData = (id) => {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+            const { id, title, completed } = data;
+            card.innerHTML = `
+                <p>${title}</p>
+                <p>${completed}</p>
+                <span>${id}</span>
+            `;
+        })
+        .catch((error) => console.error('Ошибка при загрузке данных:', error));
+};
+
+
+loadCardData(cardId);
+
+
+nextButton.onclick = () => {
+    cardId = cardId < 200 ? cardId + 1 : 1;
+    loadCardData(cardId);
+};
+
+
+prevButton.onclick = () => {
+    cardId = cardId > 1 ? cardId - 1 : 200;
+    loadCardData(cardId);
+};
+
+fetch('https://jsonplaceholder.typicode.com/posts')
+    .then((response) => response.json())
+    .then((data) => {
+        console.log('Данные из /posts:', data);
+    })
+    .catch((error) => console.error('Ошибка при загрузке данных из /posts:', error));
+
+
+
+
+
+
+
+
+
+
 
 
 
