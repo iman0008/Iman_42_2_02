@@ -1,0 +1,31 @@
+body {
+    transition: background-color 0.3s;
+}
+button {
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#toggle-block {
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+    margin-right: 10px;
+    transition: opacity 0.3s;
+}
+button {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#counter {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px;
+}
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
